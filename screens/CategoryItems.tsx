@@ -5,13 +5,12 @@ import { CategoryEndpoint } from '../utils/util-functions';
 import { DataType,ProductType } from '../utils/types';
 import Icons from '../components/Icons';
 import { useNavigation } from '@react-navigation/native';
-import { useProductsByCategory } from '../services/getProducts';
+import { useProductsByCategory } from '../services/getProducts.service';
 
 
-const CategoryItems=({route}:any)=>{
+const CategoryItems=({route})=>{
   const navigation = useNavigation();
 
-    const [Products,setProducts]=useState<DataType>();
     const {title}=route.params;
 
     const filters = [
@@ -30,7 +29,7 @@ const CategoryItems=({route}:any)=>{
         {
             id: '586914a0f-3da1-471f-bd96-145571e29d72',
             title: 'Price',
-          },
+        },
       ];
     
       
@@ -68,10 +67,8 @@ return(
    return(
        <View style={{width:'50%'}}>
           <TouchableOpacity onPress={() =>navigation.navigate("ProductScreen",e)}>
-          <Image 
-               source={require('../assets/download.png')} 
-               style={{width:'100%',height:120,borderRadius:20}}
-           />
+          <Image source={{uri:e.thumbnail}} style={{width:'100%',height:120}}/>
+
           </TouchableOpacity>
             
            <Text style={{alignItems:'center',textAlign:'center'}}>{e.title}</Text>

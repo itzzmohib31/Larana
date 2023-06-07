@@ -1,8 +1,14 @@
 import { Text,View,StyleSheet,TextInput,Image } from "react-native";
 import Buttons from "../components/Buttons";
-function Register({navigation}:any): JSX.Element {
+import { useContext, useState } from "react";
+import { AuthContext } from "../navigation/AuthProvider";
 
- 
+function Register({navigation}): JSX.Element {
+
+     const {register}=useContext(AuthContext);
+     const [username,setUsername]=useState<string>();
+     const [password,setPassword]=useState<string>();
+
  
   return (
     <View style={styles.container}>
@@ -26,26 +32,23 @@ function Register({navigation}:any): JSX.Element {
 
         <View style={{width:'80%',paddingTop:10}}>
         <Text>Username</Text>
-        <TextInput style={styles.input}></TextInput>
+        <TextInput onChangeText={(username)=>setUsername(username)} style={styles.input}></TextInput>
         </View>
 
-        {/* <View style={{width:'80%',paddingTop:10}}>
-        <Text>Date Of Birth</Text>
-        <TextInput style={styles.input}></TextInput>
-        </View> */}
+
 
         <View style={{width:'80%',paddingTop:10}}>
         <Text>Password</Text>
-        <TextInput secureTextEntry style={styles.input}></TextInput>
+        <TextInput onChangeText={(password)=>setPassword(password)} secureTextEntry style={styles.input}></TextInput>
         </View>
 
         <View style={{width:'80%',paddingTop:10}}>
         <Text>Confirm Password</Text>
-        <TextInput secureTextEntry style={styles.input}></TextInput>
+        <TextInput  secureTextEntry style={styles.input}></TextInput>
         </View>
 
 
-        <Buttons text='Register' />
+        <Buttons text='Register' method={()=>register(username,password)}/>
         <View style={{marginTop:10}} >
           <Text>Already have an account? <Text style={{color:'#FF1616'}} onPress={() => navigation.navigate('Login')}>Login</Text> </Text>
         </View>

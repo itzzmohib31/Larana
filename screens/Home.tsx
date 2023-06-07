@@ -1,18 +1,21 @@
 
-import {View,Text,TextInput} from 'react-native';
+import {View,Text,TextInput,TouchableOpacity} from 'react-native';
 import Categories from '../components/Categories';
 import CurrentBalance from '../components/CurrentBalance';
 import Recommendations from '../components/Recommendations';
 import Icons from '../components/Icons';
-const Home=()=>{
-
+import Search from './Search';
+const Home=({navigation})=>{
+    
 
     return(
         <View style={{height:'100%',backgroundColor:'white'}}>
             <View style={{width:'100%',backgroundColor:'#FF1616',padding:20,flexDirection:'row',justifyContent:'space-between'}}>
-             <TextInput placeholder='Search'  style={{backgroundColor:'white',width:'70%',borderRadius:30,padding:7,height:30}} ></TextInput>
+             <Search></Search>
              <View style={{flexDirection:'row',justifyContent:'space-around',width:'30%'}}>
+                <TouchableOpacity onPress={()=>navigation.navigate("Cart")}>
                 <Icons name='shopping-cart'></Icons>
+                </TouchableOpacity>
                 <Icons name='chat'></Icons>
                 <Icons name='menu'></Icons>
 

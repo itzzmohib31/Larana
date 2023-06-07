@@ -1,8 +1,58 @@
 import { Text,View,Image, TextInput,Button} from "react-native";
 import Buttons from "../components/Buttons";
 import Icons from "../components/Icons";
-const ProductScreens=({route}:any)=>{
-    const {title,description,price,discountPercentage,rating,stock,brand,category}=route.params;
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CartType, ProductType } from "../utils/types";
+import { useNavigation } from '@react-navigation/native';
+import Cart from "./Cart";
+
+
+
+
+const ProductScreens=({route})=>{
+    const {title,description,price,discountPercentage,rating,stock,brand,category,thumbnail}=route.params;
+    const navigation = useNavigation();
+
+
+      const addToCart = async (item:ProductType) => {
+
+        const product={
+            ...item,
+            quantity:1
+        }
+        try {
+            const jsonValue = await AsyncStorage.getItem('Cart');
+            let cartItems:CartType[] = jsonValue != null ? JSON.parse(jsonValue) : [];
+           
+            const found = cartItems.some((item) => item.id === product.id);
+
+          console.log(found)
+          if(!found)
+          {
+            cartItems.push(product);
+            await AsyncStorage.setItem('Cart', JSON.stringify(cartItems));
+          }
+          else{
+
+            cartItems = cartItems.map((item) => {
+                if (item.id === product.id) {
+                  return { ...item, quantity: item.quantity + 1 };
+                }
+                return item;
+              });
+              await AsyncStorage.setItem('Cart', JSON.stringify(cartItems));
+
+
+            }
+          
+        } catch (error) {
+          console.log('Error modifying array: ', error);
+        }
+        navigation.navigate("Cart");
+
+      };
+
+    
 
     return(
         <View>
@@ -23,7 +73,7 @@ const ProductScreens=({route}:any)=>{
             
             <View style={{height:'40%'}}>
             <Image 
-               source={require('../assets/download.png')} 
+               source={{uri:thumbnail}}
                style={{width:'100%',height:240,borderRadius:20,marginTop:40}}
            />
             </View>
@@ -45,7 +95,7 @@ const ProductScreens=({route}:any)=>{
          <Text style={{fontSize:17,paddingTop:10}} >{description}</Text>
          </View>
 
-         <Buttons text='Add To Cart' ></Buttons>
+         <Buttons method={()=>addToCart(route.params)} text='Add To Cart' ></Buttons>
 
 
 

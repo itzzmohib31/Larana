@@ -1,38 +1,29 @@
 import { Text,View,StyleSheet,TextInput,Image,Button } from "react-native";
 import Buttons from "../components/Buttons";
-import {useState} from 'react';
-import useAuth from "../hooks/useAuth";
-
-type userType={
-  username:string,
-  password:string
-}
+import {useState,useContext} from 'react';
+import { AuthContext } from "../navigation/AuthProvider";
 
 
-export default function Login({navigation}:any): JSX.Element {
+
+export default function Login({navigation}): JSX.Element {
+
+  const {login}=useContext(AuthContext);
+
 
   const [userData, setUserData] = useState<userType>({
     username: '',
     password: '',
   });
 
-  const status=useAuth(userData);
 
   const handleInputChange = (key:string, value:string) => {
-    setUserData((prevFormData) => ({
+    setUserData((prevFormData:{username:string,password:string},) => ({
       ...prevFormData,
       [key]: value,
     }));
   };
 
-  const Submit=()=>{
-     if(status===true)
-     {
-      navigation.navigate('Home')
-     }
-  }
 
- 
  
   return (
     <View style={styles.container}>
@@ -63,7 +54,7 @@ export default function Login({navigation}:any): JSX.Element {
         </View>
 
 
-        <Buttons text='Login' method={()=>Submit()} />
+        <Buttons text='Login' method={()=>login(userData.username,userData.password)} />
         {/* <Button onPress={Submit} title="Login" ></Button> */}
         <View style={{marginTop:10}} >
           <Text>Don't have an account?   <Text onPress={() => navigation.navigate('Register')}  style={{color:'#FF1616'}} >Create a new account</Text> </Text>

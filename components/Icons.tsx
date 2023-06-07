@@ -1,7 +1,8 @@
 import type {PropsWithChildren} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 type IconProps=PropsWithChildren<{
     name:string
@@ -36,6 +37,9 @@ const Icons=({name}:any)=>{
 
                 case 'menu':
                     return <Entypo name='menu' size={30} style={{color:'white'}} ></Entypo>
+                    break;
+                    case 'cross':
+                    return <AntDesign name='delete' size={25} style={{color:'gray'}} ></AntDesign>
                     break;
         
             default:
